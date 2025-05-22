@@ -1,0 +1,31 @@
+{
+  "name": "cv-processor-backend",
+  "version": "1.0.0",
+  "description": "CV Processor API using Hapi.js",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "@hapi/hapi": "^21.3.2",
+    "@hapi/inert": "^7.1.0",
+    "@hapi/vision": "^7.0.3",
+    "axios": "^1.6.2",
+    "bcrypt": "^6.0.0",
+    "cookie": "^1.0.2",
+    "dotenv": "^16.3.1",
+    "fs": "^0.0.1-security",
+    "hapi-swagger": "^17.3.2",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "mammoth": "^1.6.0",
+    "pdf-parse": "^1.1.1",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

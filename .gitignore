@@ -1,0 +1,80 @@
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build output
+/frontend/build/
+/frontend/dist/
+/backend/dist/
+
+# SQLite database files
+*.sqlite
+*.sqlite3
+*.db
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+/coverage
+.nyc_output
+/cypress/videos/
+/cypress/screenshots/
+
+# Cache
+.npm
+.eslintcache
+.cache
+.parcel-cache
+
+# Editor directories and files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Temporary files
+tmp/
+temp/
+.temp
+.tmp
+*.tmp
+*.bak
+
+# Uploads
+/backend/uploads/*
+!/backend/uploads/.gitkeep
+
+# Backend specific
+.serverless/
+.webpack/
+
+# Frontend specific
+/frontend/.next/
+/frontend/out/
+/frontend/.nuxt/
+/frontend/.cache/
+
+# Project specific
+.cursor/
+
+# OS specific
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db 
