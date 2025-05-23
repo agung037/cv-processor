@@ -1,0 +1,39 @@
+services:
+  - type: web
+    name: red-cv-backend
+    env: node
+    plan: free
+    branch: main
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: HOST
+        value: 0.0.0.0
+      - key: JWT_SECRET
+        generateValue: true
+      - key: GROQ_API_KEY
+        description: "Groq API Key for AI processing (required for CV analysis)"
+      - key: DATABASE_URL
+        value: /opt/render/project/src/red_cv.sqlite
+
+  - type: web
+    name: red-cv-frontend
+    env: static
+    branch: main
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: build
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+  - type: database
+    name: red-cv-sqlite
+    plan: free
+    ipAllowList: [] 

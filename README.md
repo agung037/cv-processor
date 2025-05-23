@@ -1,134 +1,71 @@
-# RED CV
+# RED CV Processor
 
-Aplikasi untuk menganalisis CV dan memberikan saran profesional menggunakan AI. Dibangun dengan React dan Hapi.js.
+## Deployment on Render
 
-## Struktur Aplikasi
+### Prerequisites
+- GitHub account
+- Render account
+- **Groq API Key** (Required for CV Analysis)
+  - Sign up at [Groq Console](https://console.groq.com/)
+  - Create and copy your API key
 
-- **Backend**: API berbasis Hapi.js yang memproses file CV dan berinteraksi dengan API Groq
-- **Frontend**: Antarmuka pengguna React dengan Material UI
+### Deployment Steps
+1. Fork this repository to your GitHub account
 
-## Persyaratan
+2. Create Services on Render:
+   a. Web Service for Backend
+   - Connect to your GitHub repository
+   - Root Directory: `backend`
+   - Build Command: `npm install`
+   - Start Command: `npm start`
+   - **Environment Variables**:
+     - `NODE_ENV`: production
+     - `HOST`: 0.0.0.0
+     - `PORT`: 10000
+     - `JWT_SECRET`: Generate a secure random secret
+     - **`GROQ_API_KEY`**: 
+       - **IMPORTANT**: You MUST set this manually in Render
+       - Go to Service > Environment
+       - Add new environment variable
+       - Paste your Groq API key here
 
-- Node.js v14+ dan npm
-- API key dari Groq
+   b. Static Site for Frontend
+   - Connect to your GitHub repository
+   - Root Directory: `frontend`
+   - Build Command: `npm install && npm run build`
+   - Publish Directory: `build`
 
-## Instalasi
+3. Configure Environment Variables
+   - Set `REACT_APP_API_URL` to your backend service URL
+   - **Mandatory**: Set `GROQ_API_KEY` in backend service settings
 
-### Backend
-
-1. Masuk ke direktori backend:
+### Local Development
+1. Clone the repository
+2. Install dependencies
+   ```bash
+   cd backend && npm install
+   cd ../frontend && npm install
    ```
-   cd backend
-   ```
+3. Create a `.env` file in the root directory
+4. Start backend: `cd backend && npm run dev`
+5. Start frontend: `cd frontend && npm start`
 
-2. Install dependencies:
-   ```
-   npm install
-   ```
+### Troubleshooting
+- Ensure all environment variables are correctly set
+- Check Render deployment logs for any errors
+- Verify Groq API Key is valid
 
-3. Buat file `.env` (opsional):
-   ```
-   PORT=3000
-   GROQ_API_KEY=your_groq_api_key
-   GROQ_MODEL=qwen-qwq-32b
-   ```
+### Troubleshooting Groq API Key
+- If CV analysis fails, verify your Groq API key
+- Check [Groq Documentation](https://console.groq.com/docs) for key management
+- Ensure the key has necessary permissions
+- Regenerate key if authentication fails
 
-4. Jalankan server:
-   ```
-   npm run dev
-   ```
+## Technologies
+- Frontend: React
+- Backend: Hapi.js
+- Database: SQLite
+- AI Analysis: Groq API
 
-### Frontend
-
-1. Masuk ke direktori frontend:
-   ```
-   cd frontend
-   ```
-
-2. Install dependencies:
-   ```
-   npm install
-   ```
-
-3. Jalankan aplikasi frontend:
-   ```
-   npm start
-   ```
-
-4. Buka browser dan akses `http://localhost:3001`
-
-## Sistem Autentikasi
-
-Aplikasi ini menggunakan sistem autentikasi berbasis token JWT dengan SQLite sebagai database. Ada dua peran pengguna:
-
-- **Admin**: Memiliki akses untuk mengelola pengguna lain
-- **User**: Dapat menggunakan layanan analisis CV
-
-### Akun Default
-
-Berikut adalah akun default yang tersedia setelah instalasi:
-
-1. **Admin**
-   - Username: `admin`
-   - Password: `melonwater12`
-   - Status: Aktif
-
-2. **User 1**
-   - Username: `user1`
-   - Password: `melonwater12`
-   - Status: Aktif
-
-3. **User 2**
-   - Username: `user2`
-   - Password: `melonwater12`
-   - Status: Tidak aktif
-
-## Penggunaan Akun Admin
-
-Sebagai admin, Anda memiliki kemampuan untuk mengelola pengguna dalam sistem. Berikut cara menggunakan akun admin:
-
-1. **Login sebagai Admin**:
-   - Masuk menggunakan username `admin` dan password `melonwater12`
-   - Setelah berhasil login, Anda akan melihat menu "Kelola Pengguna" di navigasi
-
-2. **Mengelola Pengguna**:
-   - Klik menu "Kelola Pengguna" untuk masuk ke halaman manajemen pengguna
-   - Anda dapat melihat daftar semua pengguna (kecuali admin lain)
-   - Untuk setiap pengguna, Anda dapat:
-     - Mengaktifkan/menonaktifkan akun mereka dengan tombol "Aktifkan" atau "Nonaktifkan"
-     - Menghapus akun mereka dengan tombol hapus (ikon tempat sampah)
-
-3. **Memverifikasi Pendaftaran Baru**:
-   - Ketika pengguna baru mendaftar, akun mereka secara default tidak aktif
-   - Anda perlu mengaktifkan akun baru melalui halaman "Kelola Pengguna" sebelum mereka dapat menggunakan aplikasi
-
-## Penggunaan
-
-1. Login dengan akun yang aktif (admin atau user yang telah diaktifkan)
-2. Unggah file CV Anda (format .docx atau .pdf)
-3. Sistem akan mengekstrak teks dari CV dan mengirimkannya ke API Groq
-4. Hasil analisis akan ditampilkan secara profesional
-5. Anda dapat menyimpan hasil analisis sebagai file teks
-6. Riwayat analisis CV tersimpan dan dapat diakses kembali
-
-### Fitur Tambahan
-
-- **Riwayat CV**: Pengguna dapat melihat riwayat analisis CV mereka
-- **Manajemen Pengguna**: Admin dapat mengaktifkan, menonaktifkan, atau menghapus akun pengguna
-- **Sistem Registrasi**: Pengguna baru dapat mendaftar tetapi perlu diaktivasi oleh admin
-
-## Fitur
-
-- Ekstraksi teks dari file DOCX dan PDF
-- Analisis CV menggunakan model AI canggih (Qwen-QwQ-32B)
-- Antarmuka pengguna yang ramah dan responsif
-- Dukungan bahasa Indonesia
-- Sistem autentikasi dan otorisasi
-
-## Kustomisasi
-
-Anda dapat mengubah model AI yang digunakan dengan mengedit `GROQ_MODEL` di file `.env` atau `config.js`.
-
-## Lisensi
-
-MIT 
+## License
+[Your License Here] 
