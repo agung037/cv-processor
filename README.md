@@ -33,6 +33,40 @@ Aplikasi untuk menganalisis CV dan memberikan saran profesional menggunakan AI. 
    GROQ_MODEL=qwen-qwq-32b
    ```
 
+### Konfigurasi JWT Secret
+
+**PENTING**: Anda HARUS membuat JWT Secret yang kuat untuk keamanan autentikasi.
+
+#### Cara Membuat JWT Secret yang Aman
+
+1. **Menggunakan Node.js**:
+   Jalankan perintah berikut di terminal:
+   ```bash
+   node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+   ```
+   Ini akan menghasilkan string acak 128 karakter yang sangat aman.
+
+2. **Menggunakan Generator Online**:
+   - Kunjungi https://generate-secret.vercel.app/32
+   - Salin kunci yang dihasilkan
+
+3. **Pedoman Pembuatan Secret**:
+   - Gunakan string minimal 32 karakter
+   - Gabungkan huruf besar, huruf kecil, angka, dan karakter khusus
+   - Hindari pola yang dapat diprediksi
+   - Jangan pernah membagikan secret ini
+
+Tambahkan ke file `.env`:
+```
+JWT_SECRET=your_very_long_and_random_secret_key_here
+```
+
+**PERINGATAN**:
+- Jangan gunakan secret default
+- Gunakan secret berbeda untuk development dan production
+- Ganti secret secara berkala
+- Simpan secret dengan aman dan jangan commit ke version control
+
 4. Jalankan server:
    ```
    npm run dev
