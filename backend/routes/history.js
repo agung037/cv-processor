@@ -1,5 +1,6 @@
 const { getDb } = require('../models/database');
 const { authenticate } = require('../middleware/authMiddleware');
+const Joi = require('joi');
 
 /**
  * Routes for CV history
@@ -9,7 +10,19 @@ module.exports = [
     method: 'GET',
     path: '/api/history',
     options: {
-      pre: [{ method: authenticate }]
+      tags: ['api', 'history'],
+      description: 'Get user\'s CV analysis history',
+      pre: [{ method: authenticate }],
+      response: {
+        schema: Joi.object({
+          history: Joi.array().items(Joi.object({
+            id: Joi.number(),
+            filename: Joi.string(),
+            original_filename: Joi.string(),
+            created_at: Joi.string()
+          }))
+        })
+      }
     },
     handler: async (request, h) => {
       try {
@@ -37,7 +50,26 @@ module.exports = [
     method: 'GET',
     path: '/api/history/{id}',
     options: {
-      pre: [{ method: authenticate }]
+      tags: ['api', 'history'],
+      description: 'Get specific CV analysis history entry',
+      pre: [{ method: authenticate }],
+      validate: {
+        params: Joi.object({
+          id: Joi.number().required()
+        })
+      },
+      response: {
+        schema: Joi.object({
+          historyItem: Joi.object({
+            id: Joi.number(),
+            user_id: Joi.number(),
+            filename: Joi.string(),
+            original_filename: Joi.string(),
+            created_at: Joi.string()
+          }),
+          analysis: Joi.object().required()
+        })
+      }
     },
     handler: async (request, h) => {
       try {
@@ -72,7 +104,20 @@ module.exports = [
     method: 'DELETE',
     path: '/api/history/{id}',
     options: {
-      pre: [{ method: authenticate }]
+      tags: ['api', 'history'],
+      description: 'Delete a specific CV analysis history entry',
+      pre: [{ method: authenticate }],
+      validate: {
+        params: Joi.object({
+          id: Joi.number().required()
+        })
+      },
+      response: {
+        schema: Joi.object({
+          message: Joi.string(),
+          id: Joi.number()
+        })
+      }
     },
     handler: async (request, h) => {
       try {

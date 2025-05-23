@@ -1,6 +1,7 @@
 const { getDb } = require('../models/database');
 const { generateToken, comparePassword, hashPassword } = require('../utils/authUtils');
 const { authenticate, authorize } = require('../middleware/authMiddleware');
+const Joi = require('joi');
 
 /**
  * Authentication routes
@@ -9,6 +10,23 @@ module.exports = [
   {
     method: 'POST',
     path: '/api/auth/register',
+    options: {
+      tags: ['api', 'auth'],
+      description: 'Register a new user',
+      validate: {
+        payload: Joi.object({
+          username: Joi.string().required().min(3).max(30),
+          email: Joi.string().email().required(),
+          password: Joi.string().required().min(6)
+        })
+      },
+      response: {
+        schema: Joi.object({
+          message: Joi.string(),
+          userId: Joi.number()
+        })
+      }
+    },
     handler: async (request, h) => {
       try {
         const { username, email, password } = request.payload;
@@ -59,6 +77,28 @@ module.exports = [
   {
     method: 'POST',
     path: '/api/auth/login',
+    options: {
+      tags: ['api', 'auth'],
+      description: 'User login',
+      validate: {
+        payload: Joi.object({
+          username: Joi.string().required(),
+          password: Joi.string().required()
+        })
+      },
+      response: {
+        schema: Joi.object({
+          message: Joi.string(),
+          user: Joi.object({
+            id: Joi.number(),
+            username: Joi.string(),
+            email: Joi.string(),
+            role: Joi.string()
+          }),
+          token: Joi.string()
+        })
+      }
+    },
     handler: async (request, h) => {
       try {
         const { username, password } = request.payload;
@@ -125,6 +165,15 @@ module.exports = [
   {
     method: 'POST',
     path: '/api/auth/logout',
+    options: {
+      tags: ['api', 'auth'],
+      description: 'User logout',
+      response: {
+        schema: Joi.object({
+          message: Joi.string()
+        })
+      }
+    },
     handler: (request, h) => {
       return h.response({
         message: 'Logout berhasil'
@@ -135,7 +184,19 @@ module.exports = [
     method: 'GET',
     path: '/api/auth/me',
     options: {
-      pre: [{ method: authenticate }]
+      tags: ['api', 'auth'],
+      description: 'Get current user information',
+      pre: [{ method: authenticate }],
+      response: {
+        schema: Joi.object({
+          user: Joi.object({
+            id: Joi.number(),
+            username: Joi.string(),
+            email: Joi.string(),
+            role: Joi.string()
+          })
+        })
+      }
     },
     handler: async (request, h) => {
       try {

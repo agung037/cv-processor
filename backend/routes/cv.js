@@ -5,6 +5,7 @@ const { extractTextFromFile } = require('../utils/fileExtractor');
 const { generateCVAdvice } = require('../services/cvAnalyzerService');
 const { authenticate } = require('../middleware/authMiddleware');
 const { getDb } = require('../models/database');
+const Joi = require('joi');
 
 const uploadDir = path.join(__dirname, '../uploads');
 
@@ -20,6 +21,17 @@ module.exports = [
   {
     method: 'GET',
     path: '/api/status',
+    options: {
+      tags: ['api', 'cv'],
+      description: 'Check API status',
+      response: {
+        schema: Joi.object({
+          status: Joi.string(),
+          message: Joi.string(),
+          timestamp: Joi.string()
+        })
+      }
+    },
     handler: (request, h) => {
       return {
         status: 'ok',
@@ -32,6 +44,8 @@ module.exports = [
     method: 'POST',
     path: '/api/cv/analyze',
     options: {
+      tags: ['api', 'cv'],
+      description: 'Analyze CV file',
       pre: [{ method: authenticate }],
       payload: {
         output: 'file',
@@ -40,6 +54,20 @@ module.exports = [
         maxBytes: 20 * 1024 * 1024, // 20MB limit
         allow: 'multipart/form-data'
       },
+      validate: {
+        payload: Joi.object({
+          cv_file: Joi.object({
+            filename: Joi.string().required(),
+            path: Joi.string().required()
+          }).required()
+        })
+      },
+      response: {
+        schema: Joi.object({
+          advice: Joi.object().required(),
+          historyId: Joi.number().required()
+        })
+      }
     },
     handler: async (request, h) => {
       try {

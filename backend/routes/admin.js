@@ -1,5 +1,6 @@
 const { getDb } = require('../models/database');
 const { authenticate, authorize } = require('../middleware/authMiddleware');
+const Joi = require('joi');
 
 /**
  * Admin routes for user management
@@ -9,10 +10,24 @@ module.exports = [
     method: 'GET',
     path: '/api/admin/users',
     options: {
+      tags: ['api', 'admin'],
+      description: 'Get list of users (excluding current admin)',
       pre: [
         { method: authenticate },
         { method: authorize(['admin']) }
-      ]
+      ],
+      response: {
+        schema: Joi.object({
+          users: Joi.array().items(Joi.object({
+            id: Joi.number(),
+            username: Joi.string(),
+            email: Joi.string(),
+            role: Joi.string(),
+            is_active: Joi.boolean(),
+            created_at: Joi.string()
+          }))
+        })
+      }
     },
     handler: async (request, h) => {
       try {
@@ -40,10 +55,27 @@ module.exports = [
     method: 'PUT',
     path: '/api/admin/users/{id}/status',
     options: {
+      tags: ['api', 'admin'],
+      description: 'Update user account status',
       pre: [
         { method: authenticate },
         { method: authorize(['admin']) }
-      ]
+      ],
+      validate: {
+        params: Joi.object({
+          id: Joi.number().required()
+        }),
+        payload: Joi.object({
+          is_active: Joi.boolean().required()
+        })
+      },
+      response: {
+        schema: Joi.object({
+          message: Joi.string(),
+          userId: Joi.number(),
+          is_active: Joi.boolean()
+        })
+      }
     },
     handler: async (request, h) => {
       try {
@@ -97,10 +129,23 @@ module.exports = [
     method: 'DELETE',
     path: '/api/admin/users/{id}',
     options: {
+      tags: ['api', 'admin'],
+      description: 'Delete a user account',
       pre: [
         { method: authenticate },
         { method: authorize(['admin']) }
-      ]
+      ],
+      validate: {
+        params: Joi.object({
+          id: Joi.number().required()
+        })
+      },
+      response: {
+        schema: Joi.object({
+          message: Joi.string(),
+          userId: Joi.number()
+        })
+      }
     },
     handler: async (request, h) => {
       try {

@@ -38,6 +38,19 @@ Aplikasi untuk menganalisis CV dan memberikan saran profesional menggunakan AI. 
    npm run dev
    ```
 
+### Dokumentasi API
+
+Dokumentasi API tersedia melalui Swagger UI:
+- URL Dokumentasi: `http://localhost:3000/docs`
+- URL Swagger UI: `http://localhost:3000/swagger`
+- URL Swagger JSON: `http://localhost:3000/swagger.json`
+
+Dokumentasi mencakup:
+- Endpoint autentikasi
+- Endpoint analisis CV
+- Endpoint manajemen pengguna admin
+- Endpoint riwayat CV
+
 ### Frontend
 
 1. Masuk ke direktori frontend:
@@ -124,6 +137,7 @@ Sebagai admin, Anda memiliki kemampuan untuk mengelola pengguna dalam sistem. Be
 - Antarmuka pengguna yang ramah dan responsif
 - Dukungan bahasa Indonesia
 - Sistem autentikasi dan otorisasi
+- Dokumentasi API menggunakan Swagger
 
 ## Kustomisasi
 

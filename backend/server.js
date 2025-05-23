@@ -2,6 +2,8 @@
 
 const Hapi = require('@hapi/hapi');
 const Inert = require('@hapi/inert');
+const Vision = require('@hapi/vision');
+const HapiSwagger = require('hapi-swagger');
 const path = require('path');
 const config = require('./config');
 const { initializeDatabase } = require('./models/database');
@@ -46,8 +48,60 @@ const init = async () => {
     path: '/'
   });
 
+  // Swagger configuration
+  const swaggerOptions = {
+    info: {
+      title: 'RED CV Processor API Documentation',
+      version: require('./package.json').version,
+      description: 'API for CV Analysis and User Management',
+      contact: {
+        name: 'RED CV Team',
+        email: 'support@redcv.com'
+      }
+    },
+    grouping: 'tags',
+    tags: [
+      {
+        name: 'auth',
+        description: 'Authentication and User Management Endpoints'
+      },
+      {
+        name: 'cv',
+        description: 'CV Analysis and Processing Endpoints'
+      },
+      {
+        name: 'admin',
+        description: 'Admin User Management Endpoints'
+      },
+      {
+        name: 'history',
+        description: 'CV Analysis History Endpoints'
+      }
+    ],
+    documentationPath: '/docs',
+    swaggerUIPath: '/swagger',
+    jsonPath: '/swagger.json',
+    schemes: ['http', 'https'],
+    securityDefinitions: {
+      jwt: {
+        type: 'apiKey',
+        name: 'Authorization',
+        in: 'header',
+        description: 'Enter your JWT token with the "Bearer: " prefix'
+      }
+    },
+    security: [{ jwt: [] }]
+  };
+
   // Register plugins
-  await server.register(Inert);
+  await server.register([
+    Inert,
+    Vision,
+    {
+      plugin: HapiSwagger,
+      options: swaggerOptions
+    }
+  ]);
 
   // Register routes
   server.route([
