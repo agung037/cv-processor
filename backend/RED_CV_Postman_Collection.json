@@ -1,0 +1,290 @@
+{
+	"info": {
+		"_postman_id": "red-cv-api-collection-v1",
+		"name": "RED CV API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"description": "API Documentation for RED CV Processor - CV Analysis and User Management"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"newuser\",\n    \"email\": \"newuser@example.com\",\n    \"password\": \"strongpassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "register"]
+						},
+						"description": "Register a new user account. The account will be inactive by default and needs admin activation."
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"user1\",\n    \"password\": \"melonwater12\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "login"]
+						},
+						"description": "Authenticate user and receive JWT token"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/me",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "me"]
+						},
+						"description": "Retrieve current user's information"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/logout",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "logout"]
+						},
+						"description": "Logout the current user"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CV Analysis",
+			"item": [
+				{
+					"name": "Check API Status",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/status",
+							"host": ["{{base_url}}"],
+							"path": ["api", "status"]
+						},
+						"description": "Check if the API is running"
+					},
+					"response": []
+				},
+				{
+					"name": "Analyze CV",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "cv_file",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/cv/analyze",
+							"host": ["{{base_url}}"],
+							"path": ["api", "cv", "analyze"]
+						},
+						"description": "Upload and analyze a CV file (DOCX or PDF)"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CV History",
+			"item": [
+				{
+					"name": "Get CV History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/history",
+							"host": ["{{base_url}}"],
+							"path": ["api", "history"]
+						},
+						"description": "Retrieve user's CV analysis history"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Specific CV History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/history/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "history", "1"]
+						},
+						"description": "Retrieve details of a specific CV analysis history entry"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete CV History Entry",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/history/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "history", "1"]
+						},
+						"description": "Delete a specific CV analysis history entry"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin Management",
+			"item": [
+				{
+					"name": "Get Users List",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/users",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admin", "users"]
+						},
+						"description": "Retrieve list of users (admin only)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Status",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/users/2/status",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admin", "users", "2", "status"]
+						},
+						"description": "Activate or deactivate a user account (admin only)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/users/2",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admin", "users", "2"]
+						},
+						"description": "Delete a user account (admin only)"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+} 
